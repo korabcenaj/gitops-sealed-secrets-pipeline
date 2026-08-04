@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-production-workload-security
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-read-only-rootfs
+      match:
+        any:
+          - resources:
+              namespaces:
+                - prod
+              kinds:
+                - Pod
+      validate:
+        message: "Production workloads (Postgres, Valkey, Matrix) must execute with readOnlyRootFilesystem."
+        pattern:
+          spec:
+            containers:
+              - securityContext:
+                  readOnlyRootFilesystem: true

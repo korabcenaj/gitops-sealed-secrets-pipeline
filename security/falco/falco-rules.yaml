@@ -1,0 +1,11 @@
+- rule: Terminal Shell Spawned in Container
+  desc: Detect interactive terminal shell executed inside a running container
+  condition: container.id != host and proc.name in (bash, sh, zsh, ksh)
+  output: "Notice Terminal shell spawned in container (user=%user.name pod=%k8s.pod.name ns=%k8s.ns.name image=%container.image.repository)"
+  priority: WARNING
+
+- rule: Sensitive File Written in Container
+  desc: Detect unauthorized write to /etc or /usr/bin inside container
+  condition: open_write and container.id != host and fd.name startswith /etc/
+  output: "Critical File modification detected in sensitive directory (user=%user.name file=%fd.name pod=%k8s.pod.name)"
+  priority: CRITICAL

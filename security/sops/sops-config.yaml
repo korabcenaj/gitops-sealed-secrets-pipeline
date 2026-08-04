@@ -1,0 +1,4 @@
+creation_rules:
+  - path_regex: .*\.enc\.yaml$
+    pgp: 'F392942C8070BF768E06A2B4FE695C05831F2A76'
+    kms: 'arn:aws:kms:eu-central-1:123456789012:key/sops-key'
